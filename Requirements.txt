@@ -1,0 +1,35 @@
+Plecind de la o imagine instalata de Kali Linux (linux mai jos link) sau orice alt Linux instalat,
+sa se instaleze si activeze serverele de apache (web server) si MySQL/MariaDB (server baze de date).
+Deasemenea sa se activeze php pentru paginile web (in caz ca nu este activat).
+
+Se vor configura in serverul apache trei site-uri web (name based virtual hosts) cu urmatoarele domenii:
+www.website1.ro www.website2.ro www.website3.ro. Fiecare site va avea un continut de
+pagini web diferit de celelalte:
+
+www.website1.ro: 3 pagini html 
+  index.html, page1.html si page2.html, cu link-uri de navigare intre ele, 
+  fiecare pagina va contine cite doua imagini stocate locate pe server
+
+www.website2.ro: 4 pagini php
+  index.php va contine trei form-uri diferite, cite unul pt GET, POST (3-4 cimpuri + buton submit)
+            si unul pentru upload fisiere (selectie fisier + buton submit)
+  action_get.php    - va afisa cimpurile completate GET si va genera un fisier text cu ele
+  action_post.php   - va afisa cimpurile completate POST si va genera un fisier text cu ele
+  action_upload.php - va salva local fisierul intr-un subdirector /files/ pe server
+  * fisierele text pt GET  vor fi salvate cu numele file-get-[data]-[ora].txt
+  * fisierele text pt POST vor fi salvate cu numele file-postt-[data]-[ora].txt
+    ([data],[ora] vor fi data curenta si ora curenta la momentul respectiv, ex. 20210421-153045)
+  * aceste fisiere vor contine data, ora curenta, IP site remote, pagina referer, user agent
+    (detalii pe site-ul php.net server vars
+  * exemplu file upload folosind php upload POST
+  * toate fisierele din directorul files trebuie sa fie vizibile accesind link-ul http://www.website2.ro/files/
+
+www.website3.ro: 3 pagini php generate automat dintr-o baza de date MySQL, cu link-uri intre ele,
+    datele din 2-3 tabele simpla cu citeva inregistrari
+
+Pentru configurarea celor trei domenii, se poate folosi un server DNS local (bind), sau se pot
+asocia cu IP-ul serverului prin intermediul fisierului de configurare /etc/hosts.
+
+Domeniul website1.ro va fi configurat sa poate fi accesat prin http si https (port 80 si 443),
+restul doar prin http (port 80). Pentru acest lucru, se va genera si configura pe server un
+certificat web self-signed (folosind utilitarul openssl).
